@@ -26,17 +26,17 @@ function computeWon(cs, scissors, paper, rock) {
 }
 
 
-function playRound(playerSelection, computerSelection) {
+function playRound(playerSelection, computerSelection, results) {
     let ps = playerSelection.toUpperCase();
     let cs = computerSelection.toUpperCase();
     let retval;
 
     if (ps === "ROCK") {
-       retval = computeWon(cs, false, true, undefined);
+       retval = computeWon(cs, true, false, undefined);
     } else if (ps === "PAPER") {
         retval = computeWon(cs, false, undefined, true);
     } else if (ps === "SCISSORS") {
-       retval = computeWon(cs, undefined, false, true);
+       retval = computeWon(cs, undefined, true, false);
     }
 
     if (retval === "You Lose!") {
@@ -47,15 +47,13 @@ function playRound(playerSelection, computerSelection) {
         retval = retval + " " + playerSelection + " === " + computerSelection;
     }
 
-    return retval; 
+    results.textContent = retval; 
 }
 
-function game() {
-    const playerSelection = prompt("Input a choice: ");
-    const computerSelection = getComputerChoice();
-    for(let i = 0; i < 5; i++) {
-        console.log(playRound(playerSelection, computerSelection));
-    }
-}
-
-game();
+const results = document.querySelector('.results');
+const btns = document.querySelectorAll('button');
+btns.forEach(btn => btn.addEventListener('click', e => {
+    let playerSelection = btn.getAttribute('class');
+    let computerSelection = getComputerChoice();
+    playRound(playerSelection, computerSelection, results);
+}));
